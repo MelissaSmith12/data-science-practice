@@ -31,7 +31,10 @@ errorLog <- data.frame(itemCode=character(), errorType=character())
 #Create a function to pass data frame (x) with offending item code and report error (y) to error log file
 logItems <- function(x, y, z) {
     #find number of rows in inbound item code list
+    x
     nrows <- nrow(x)  
+    if(nrows > 0) {
+    x
     #create [vector] of error messages matching length of inbound item code list
     errorMessage <- rep(y, nrows) 
     #append error messages to data frame
@@ -39,10 +42,14 @@ logItems <- function(x, y, z) {
     #append rows from item code data frame to error log
     errorLog <<- rbind(z, x)
     }
+}
 
 #Find item codes where the item code contains a space -- not developed yet, dummy code while testing out logItems Function
 currentNotRetired <- select(filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress"),Item.Code)
 
+#currentNotRetired <- select(filter(currentReport, Item.Status == "Active"),Item.Code)
+
+currentNotRetired
 logItems(currentNotRetired, "space in item code", errorLog)
 
 #Prep error log for export by adding item subject

@@ -31,14 +31,3 @@ currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status
 
 #Find item codes where the item code contains a space
 
-head(currentReport)
-
-#Generate summary statistics
-
-#Total number of items per item writer
-TotalPerItemWriter <- count(currentReport, c("Item.Writer"))
-
-#Average number of item edits per item writer
-
-
-#Item writers with the most retired items (minus an ELA passages that are retired)

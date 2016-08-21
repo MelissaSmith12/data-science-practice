@@ -13,21 +13,39 @@ library(plyr)
 #Set filenames and change working directory
 directory <- "C:/Users/Melissa/Downloads"
 setwd(directory) 
+
+#Load allitem report, currently commented out during program creation and testing
 CurrentDelivery <- "FAIB-allallItem04082016.csv"
 
-currentReport <- read.csv2(CurrentDelivery, header = TRUE, sep = ",", quote = "\"", nrows = 500)
+#Instead load custom allItemReport with embedded errors for routine creation
+currentDelivery <- "FAIB-errorExamples.csv"
 
-#Select Active Items
-currentActive <- filter(currentReport, Item.Status == "Active")
+currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"")
 
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
 
+#Create data frame for log file
+errorLog <- data.frame(itemCode=character(), errorType=character())
+
+#Create a function to pass data frame (x) with offending item code and report error (y) to error log file
+logItems <- function(x, y, z) {
+    #find number of rows in inbound item code list
+    nrows <- nrow(x)  
+    #create [vector] of error messages matching length of inbound item code list
+    errorMessage <- rep(y, nrows) 
+    #append error messages to data frame
+    x <- cbind(x, errorMessage)    
+    #append rows from item code data frame to error log
+    errorLog <<- rbind(z, x)
+    }
+
+#Find item codes where the item code contains a space -- not developed yet, dummy code while testing out logItems Function
+currentNotRetired <- select(filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress"),Item.Code)
+
+logItems(currentNotRetired, "space in item code", errorLog)
+
+#Prep error log for export by adding item subject
 
 
-
-#Convert the Created.Date and Last.Modified.By columns
-
-
-#Find item codes where the item code contains a space
-
+#Export log file

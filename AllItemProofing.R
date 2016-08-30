@@ -47,7 +47,7 @@ logItems <- function(x, y, z) {
     #create [vector] of error messages matching length of inbound item code list
     errorMessage <- rep(y, nrows) 
     #append error messages to data frame
-    x <- cbind(x, errorMessage)    
+    x <- as.data.frame(cbind(x, errorMessage))    
     #append rows from item code data frame to error log
     errorLog <<- rbind(z, x)
     }
@@ -56,11 +56,11 @@ logItems <- function(x, y, z) {
 #Find item codes where the item code contains a space -- not developed yet, dummy code while testing out logItems Function
 currentNotRetired <- select(filter(currentReport, Item.Status == "Active"),Item.Code)
 
-problemItems <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
+itemCodeSpaces <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
 logItems(problemItems, "space in item code", errorLog)
 
-problemItems <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
-logItems(problemItems, "Missing Bloom's", errorLog)
+missingBloom <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
+logItems(missingBloom, "Missing Bloom", errorLog)
 
 
 #Prep error log for export by adding item subject

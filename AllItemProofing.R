@@ -25,6 +25,11 @@ currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
 
+#Create data frame for Blooms: DOK crosswalk
+DOK <- c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating")
+DOK <- as.data.frame(cbind(DOK, c("I","II","II", "III","III","IV")),row.names=NULL)
+colnames(DOK) <- c("Blooms", "DOK")
+
 #Create data frame for log file
 errorLog <- data.frame(itemCode=character(), errorType=character())
 
@@ -49,13 +54,15 @@ logItems <- function(x, y, z) {
 }
 
 #Find item codes where the item code contains a space -- not developed yet, dummy code while testing out logItems Function
-currentNotRetired <- select(filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress"),Item.Code)
+currentNotRetired <- select(filter(currentReport, Item.Status == "Active"),Item.Code)
 
-#currentNotRetired <- select(filter(currentReport, Item.Status == "Active"),Item.Code)
+problemItems <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
+logItems(problemItems, "space in item code", errorLog)
 
-itemCodeSpaces <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
-logItems(itemCodeSpaces, "space in item code", errorLog)
-itemCodeSpaces
+problemItems <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
+logItems(problemItems, "Missing Bloom's", errorLog)
+
+
 #Prep error log for export by adding item subject
 
 

@@ -62,8 +62,7 @@ logItems(problemItems, "space in item code", errorLog)
 missingBloom <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
 logItems(missingBloom, "Missing Bloom", errorLog)
 
-
 #Prep error log for export by adding item subject
-
+export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
 
 #Export log file

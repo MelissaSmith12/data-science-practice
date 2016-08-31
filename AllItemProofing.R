@@ -9,6 +9,8 @@
 #load libraries
 library(dplyr)
 library(plyr)
+library(xlsx)
+
 
 #Set filenames and change working directory
 directory <- "C:/Users/Melissa/Downloads"
@@ -66,3 +68,5 @@ logItems(missingBloom, "Missing Bloom", errorLog)
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
 
 #Export log file
+write.xlsx(errorLog, "C:/Users/Melissa/Downloads/AllItemErrorLog.xlsx")
+

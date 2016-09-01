@@ -64,6 +64,9 @@ logItems(problemItems, "space in item code", errorLog)
 missingBloom <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
 logItems(missingBloom, "Missing Bloom", errorLog)
 
+missingDOK <- select(filter(currentReport, Depth.Of.Knowledge == "NULL" | Depth.Of.Knowledge == ""),Item.Code)
+logItems(missingDOK, "Missing DOK", errorLog)
+
 missingDifficulty <- select(filter(currentReport, Estimated.Difficulty.Level == "NULL" | Estimated.Difficulty.Level == ""),Item.Code)
 logItems(missingDifficulty, "Missing Difficulty", errorLog)
 

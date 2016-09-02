@@ -23,10 +23,10 @@ CurrentDelivery <- "FAIB-allallItem04082016.xls"
 currentDelivery <- "FAIB-errorExamples.csv"
 
 #Load New item list
-newItems <- "Preliminary Active Item List.xls"
+newItemFile <- "Preliminary Active Item List.xlsx"
 
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"")
-newItems <- read.xlsx(newItems)
+newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
@@ -74,6 +74,8 @@ logItems(missingDOK, "Missing DOK", errorLog)
 missingDifficulty <- select(filter(currentReport, Estimated.Difficulty.Level == "NULL" | Estimated.Difficulty.Level == ""),Item.Code)
 logItems(missingDifficulty, "Missing Difficulty", errorLog)
 
+newItemStatus <- select(filter(merge(currentReport, newItems, by.x="Item.Code", by.y="Item.Code", all=FALSE),Item.Status == "In Progress"),Item.Code)
+logItems(newItemStatus, "New item should be active", errorLog)
 
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)

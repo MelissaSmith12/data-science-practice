@@ -17,12 +17,16 @@ directory <- "C:/Users/Melissa/Downloads"
 setwd(directory) 
 
 #Load allitem report, currently commented out during program creation and testing
-CurrentDelivery <- "FAIB-allallItem04082016.csv"
+CurrentDelivery <- "FAIB-allallItem04082016.xls"
 
 #Instead load custom allItemReport with embedded errors for routine creation
 currentDelivery <- "FAIB-errorExamples.csv"
 
+#Load New item list
+newItems <- "Preliminary Active Item List.xls"
+
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"")
+newItems <- read.xlsx(newItems)
 
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")

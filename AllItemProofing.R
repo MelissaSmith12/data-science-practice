@@ -31,6 +31,9 @@ newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
 
+#Find items with Passage Code 2 present and Passage Code 1 NULL
+missingPassageOne <- filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL")
+
 #Create data frame for Blooms: DOK crosswalk
 DOK <- c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating")
 DOK <- as.data.frame(cbind(DOK, c("I","II","II", "III","III","IV")),row.names=NULL)

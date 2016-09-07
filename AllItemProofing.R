@@ -11,7 +11,6 @@ library(dplyr)
 library(plyr)
 library(xlsx)
 
-
 #Set filenames and change working directory
 directory <- "C:/Users/Melissa/Downloads"
 setwd(directory) 
@@ -25,7 +24,9 @@ currentDelivery <- "FAIB-errorExamples.csv"
 #Load New item list
 newItemFile <- "Preliminary Active Item List.xlsx"
 
-currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"")
+
+#Need to adjust to read xlsx version, keep from 
+currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"", stringsAsFactors = FALSE)
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 
 #Select Active or in progress
@@ -35,8 +36,8 @@ currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status
 missingPassageOne <- filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL")
 
 #Create data frame for Blooms: DOK crosswalk
-DOK <- c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating")
-DOK <- as.data.frame(cbind(DOK, c("I","II","II", "III","III","IV")),row.names=NULL)
+DOK <- as.character(c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating"))
+DOK <- as.data.frame(cbind(DOK, as.character(c("I","II","II", "III","III","IV"))),row.names=NULL)
 colnames(DOK) <- c("Blooms", "DOK")
 
 #Create data frame for log file
@@ -62,9 +63,7 @@ logItems <- function(x, y, z) {
     }
 }
 
-#Find item codes where the item code contains a space -- not developed yet, dummy code while testing out logItems Function
-currentNotRetired <- select(filter(currentReport, Item.Status == "Active"),Item.Code)
-
+#Find item codes where the item code contains a space
 itemCodeSpaces <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
 logItems(itemCodeSpaces, "space in item code", errorLog)
 
@@ -77,6 +76,11 @@ logItems(missingBloom, "Missing Bloom", errorLog)
 
 missingDOK <- select(filter(currentReport, Depth.Of.Knowledge == "NULL" | Depth.Of.Knowledge == ""),Item.Code)
 logItems(missingDOK, "Missing DOK", errorLog)
+
+#Create data frame that shows item code, blooms, and DOK + crosswalkDOK
+crosswalkDOK <- merge(DOK, currentReport, by.x= "Blooms", by.y="Bloom.s.Revised.Taxonomy", all=FALSE)
+crosswalkDOK <- select(filter(crosswalkDOK, DOK != Depth.Of.Knowledge),Item.Code)
+logItems(crosswalkDOK, "Wrong DOK crosswalk", errorLog)
 
 missingDifficulty <- select(filter(currentReport, Estimated.Difficulty.Level == "NULL" | Estimated.Difficulty.Level == ""),Item.Code)
 logItems(missingDifficulty, "Missing Difficulty", errorLog)

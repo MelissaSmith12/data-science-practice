@@ -6,7 +6,7 @@
 #check whether packages are installed
 
 
-#load libraries
+#load libraries     
 library(dplyr)
 library(plyr)
 library(xlsx)
@@ -66,7 +66,11 @@ logItems <- function(x, y, z) {
 currentNotRetired <- select(filter(currentReport, Item.Status == "Active"),Item.Code)
 
 itemCodeSpaces <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
-logItems(problemItems, "space in item code", errorLog)
+logItems(itemCodeSpaces, "space in item code", errorLog)
+
+#Throws error message, but ignoring
+duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) 
+logItems(duplicateCode, "Duplicate Code", errorLog)
 
 missingBloom <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
 logItems(missingBloom, "Missing Bloom", errorLog)

@@ -32,8 +32,6 @@ newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
 
-#Find items with Passage Code 2 present and Passage Code 1 NULL
-missingPassageOne <- filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL")
 
 #Create data frame for Blooms: DOK crosswalk
 DOK <- as.character(c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating"))
@@ -87,6 +85,10 @@ logItems(missingDifficulty, "Missing Difficulty", errorLog)
 
 newItemStatus <- select(filter(merge(currentReport, newItems, by.x="Item.Code", by.y="Item.Code", all=FALSE),Item.Status == "In Progress"),Item.Code)
 logItems(newItemStatus, "New item should be active", errorLog)
+
+#Find items with Passage Code 2 present and Passage Code 1 NULL
+missingPassageOne <- filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL")
+logItems(missingPassageOne, "Missing Passage One Code", errorLog)
 
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)

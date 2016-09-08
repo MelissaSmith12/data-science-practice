@@ -24,14 +24,12 @@ currentDelivery <- "FAIB-errorExamples.csv"
 #Load New item list
 newItemFile <- "Preliminary Active Item List.xlsx"
 
-
 #Need to adjust to read xlsx version, keep from 
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"", stringsAsFactors = FALSE)
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
-
 
 #Create data frame for Blooms: DOK crosswalk
 DOK <- as.character(c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating"))
@@ -58,15 +56,16 @@ logItems <- function(x, y, z) {
     x <- as.data.frame(cbind(x, errorMessage))    
     #append rows from item code data frame to error log
     errorLog <<- rbind(z, x)
-    }
+        }
 }
 
 #Find item codes where the item code contains a space
-itemCodeSpaces <- grep(" ", currentNotRetired$Item.Code, value=TRUE)
+itemCodeSpaces <- as.data.frame(grep(" ", currentNotRetired$Item.Code, value=TRUE))
+colnames(itemCodeSpaces) <- c("Item.Code")
 logItems(itemCodeSpaces, "space in item code", errorLog)
 
 #Throws error message, but ignoring
-duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) 
+duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()
 logItems(duplicateCode, "Duplicate Code", errorLog)
 
 missingBloom <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
@@ -87,8 +86,13 @@ newItemStatus <- select(filter(merge(currentReport, newItems, by.x="Item.Code", 
 logItems(newItemStatus, "New item should be active", errorLog)
 
 #Find items with Passage Code 2 present and Passage Code 1 NULL
-missingPassageOne <- filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL")
+missingPassageOne <- select(filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL"),Item.Code)
 logItems(missingPassageOne, "Missing Passage One Code", errorLog)
+
+#Find items with Passage Code 2 > Passage Code 1
+passageTwoGreater <- select(filter(currentReport, Passage.2.Code < Passage.1.Code),Item.Code)
+logItems(passageTwoGreater, "Passage Two Code Greater Than Passage Code One", errorLog)
+
 
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)

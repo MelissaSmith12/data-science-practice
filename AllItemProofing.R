@@ -3,6 +3,8 @@
 #validity. The final output is a flatlist that identifies the field which needs
 #to be changed and a description of the change needed.
 
+#It is also a project to reacquaint myself with R packages, one tiny line of code at a time
+
 #check whether packages are installed
 
 
@@ -16,17 +18,21 @@ directory <- "C:/Users/Melissa/Downloads"
 setwd(directory) 
 
 #Load allitem report, currently commented out during program creation and testing
-CurrentDelivery <- "FAIB-allallItem04082016.xls"
+currentDelivery <- "FAIB-allallItem04082016.xlsx"
 
 #Instead load custom allItemReport with embedded errors for routine creation
 currentDelivery <- "FAIB-errorExamples.csv"
 
+#Load allpassage report
+currentPassageFile <- "FAIB-allallPass04072016-sampleError.xlsx"
+
 #Load New item list
 newItemFile <- "Preliminary Active Item List.xlsx"
 
-#Need to adjust to read xlsx version, keep from 
+#Need to adjust to read xlsx version, remember to tackle stringsAsFactors
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"", stringsAsFactors = FALSE)
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
+currentPassages <- read.xlsx(currentPassageFile, sheetName = "Sheet1")
 
 #Select Active or in progress
 currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")

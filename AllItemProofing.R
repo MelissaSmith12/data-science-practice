@@ -65,6 +65,18 @@ logItems <- function(x, y, z) {
         }
 }
 
+#Create subject/content area data frame
+contentArea <- (c("Language Arts", "Writing", "Language Arts", "Media", 
+"Language Arts", "Reading", "Math", "Mathematics", "Math", "Geometry", "Math",  
+"Algebra I","Math", "Algebra II", "Science", "Biology", "Science", 
+"Earth and Space Sciences", "Science", "Science", "Science", "Physical Sciences", "Science", "Chemistry",
+"History/Social Sciences", "American History", "History/Social Sciences", 
+"World History", "History/Social Sciences", "Economics", "History/Social Sciences",  
+"Government", "History/Social Sciences", "Geography"))
+contentArea <- as.data.frame(matrix(contentArea, nrow = 17, ncol = 2, byrow = TRUE))
+colnames(contentArea) <- c("subject","contentArea")
+
+
 #Find item codes where the item code contains a space
 itemCodeSpaces <- as.data.frame(grep(" ", currentNotRetired$Item.Code, value=TRUE))
 colnames(itemCodeSpaces) <- c("Item.Code")

@@ -92,7 +92,7 @@ logItems(missingBloom, "Missing Bloom", errorLog)
 missingDOK <- select(filter(currentReport, Depth.Of.Knowledge == "NULL" | Depth.Of.Knowledge == ""),Item.Code)
 logItems(missingDOK, "Missing DOK", errorLog)
 
-#Create data frame that shows item code, blooms, and DOK + crosswalkDOK
+#Create data frame that shows item code, blooms, and DOK + crosswalkDOK. Identify bad DOK
 crosswalkDOK <- merge(DOK, currentReport, by.x= "Blooms", by.y="Bloom.s.Revised.Taxonomy", all=FALSE)
 crosswalkDOK <- select(filter(crosswalkDOK, DOK != Depth.Of.Knowledge),Item.Code)
 logItems(crosswalkDOK, "Wrong DOK crosswalk", errorLog)
@@ -110,6 +110,12 @@ logItems(missingPassageOne, "Missing Passage One Code", errorLog)
 #Find items with Passage Code 2 > Passage Code 1
 passageTwoGreater <- select(filter(currentReport, Passage.2.Code < Passage.1.Code),Item.Code)
 logItems(passageTwoGreater, "Passage Two Code Greater Than Passage Code One", errorLog)
+
+#Find items with incorrect content area based on subject
+ContentArea <- select(filter(currentReport, (Subject == "Language Arts" & (Content.Area != "Media" & Content.Area !="Reading" & Content.Area !="Writing"))),Item.Code)
+logItems(ContentArea, "Wrong ELA content area", errorLog)
+
+
 
 
 #Prep error log for export by adding item subject

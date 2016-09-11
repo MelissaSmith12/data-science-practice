@@ -65,18 +65,6 @@ logItems <- function(x, y, z) {
         }
 }
 
-#Create subject/content area data frame
-contentArea <- (c("Language Arts", "Writing", "Language Arts", "Media", 
-"Language Arts", "Reading", "Math", "Mathematics", "Math", "Geometry", "Math",  
-"Algebra I","Math", "Algebra II", "Science", "Biology", "Science", 
-"Earth and Space Sciences", "Science", "Science", "Science", "Physical Sciences", "Science", "Chemistry",
-"History/Social Sciences", "American History", "History/Social Sciences", 
-"World History", "History/Social Sciences", "Economics", "History/Social Sciences",  
-"Government", "History/Social Sciences", "Geography"))
-contentArea <- as.data.frame(matrix(contentArea, nrow = 17, ncol = 2, byrow = TRUE))
-colnames(contentArea) <- c("subject","contentArea")
-
-
 #Find item codes where the item code contains a space
 itemCodeSpaces <- as.data.frame(grep(" ", currentNotRetired$Item.Code, value=TRUE))
 colnames(itemCodeSpaces) <- c("Item.Code")
@@ -115,8 +103,14 @@ logItems(passageTwoGreater, "Passage Two Code Greater Than Passage Code One", er
 ContentArea <- select(filter(currentReport, (Subject == "Language Arts" & (Content.Area != "Media" & Content.Area !="Reading" & Content.Area !="Writing"))),Item.Code)
 logItems(ContentArea, "Wrong ELA content area", errorLog)
 
+ContentArea <- select(filter(currentReport, (Subject == "Math" & (Content.Area != "Mathematics" & Content.Area !="Geometry" & Content.Area !="Algebra I", & Content.Area != "Algebra II"))),Item.Code)
+logItems(ContentArea, "Wrong Math content area", errorLog)
 
+ContentArea <- select(filter(currentReport, (Subject == "Science" & (Content.Area != "Biology", & Content.Area != "Earth and Space Sciences",  & Content.Area != "Science",  & Content.Area != "Physical Sciences",  & Content.Area != "Chemistry"))),Item.Code)
+logItems(ContentArea, "Wrong Science content area", errorLog)
 
+ContentArea <- select(filter(currentReport, (Subject == "History/Social Studies" & (Content.Area != "American History" & Content.Area !="World History" & Content.Area !="Geography", & Content.Area != "Government", & Content.Area != "Economics"))),Item.Code)
+logItems(ContentArea, "Wrong Social Studies content area", errorLog)
 
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)

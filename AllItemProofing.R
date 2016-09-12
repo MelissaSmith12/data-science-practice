@@ -112,6 +112,12 @@ logItems(ContentArea, "Wrong Science content area", errorLog)
 ContentArea <- select(filter(currentReport, (Subject == "History/Social Studies" & (Content.Area != "American History" & Content.Area !="World History" & Content.Area !="Geography", & Content.Area != "Government", & Content.Area != "Economics"))),Item.Code)
 logItems(ContentArea, "Wrong Social Studies content area", errorLog)
 
+badGrade <- select(filter(currentReport, (Subject == "Language Arts" & (Item.Grade == "Grades 09-12"))),Item.Code)
+logItems(badGrade, "Wrong ELA HS Grade", errorLog)
+
+badGrade <- select(filter(currentReport, (Subject != "Language Arts" & (Item.Grade == "Grade 09" | Item.Grade == "Grade 10" | Item.Grade == "Grade 11" | Item.Grade == "Grade 12"))),Item.Code)
+logItems(badGrade, "Wrong non-ELA HS Grade", errorLog)
+
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
 

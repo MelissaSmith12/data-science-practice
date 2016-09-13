@@ -74,61 +74,64 @@ logItems(itemCodeSpaces, "space in item code", errorLog)
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()
 logItems(duplicateCode, "Duplicate Code", errorLog)
 
-missingBloom <- select(filter(currentReport, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
+missingBloom <- select(filter(currentNotRetired, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
 logItems(missingBloom, "Missing Bloom", errorLog)
 
-missingDOK <- select(filter(currentReport, Depth.Of.Knowledge == "NULL" | Depth.Of.Knowledge == ""),Item.Code)
+missingDOK <- select(filter(currentNotRetired, Depth.Of.Knowledge == "NULL" | Depth.Of.Knowledge == ""),Item.Code)
 logItems(missingDOK, "Missing DOK", errorLog)
 
 #Create data frame that shows item code, blooms, and DOK + crosswalkDOK. Identify bad DOK
-crosswalkDOK <- merge(DOK, currentReport, by.x= "Blooms", by.y="Bloom.s.Revised.Taxonomy", all=FALSE)
+crosswalkDOK <- merge(DOK, currentNotRetired, by.x= "Blooms", by.y="Bloom.s.Revised.Taxonomy", all=FALSE)
 crosswalkDOK <- select(filter(crosswalkDOK, DOK != Depth.Of.Knowledge),Item.Code)
 logItems(crosswalkDOK, "Wrong DOK crosswalk", errorLog)
 
-missingDifficulty <- select(filter(currentReport, Estimated.Difficulty.Level == "NULL" | Estimated.Difficulty.Level == ""),Item.Code)
+missingDifficulty <- select(filter(currentNotRetired, Estimated.Difficulty.Level == "NULL" | Estimated.Difficulty.Level == ""),Item.Code)
 logItems(missingDifficulty, "Missing Difficulty", errorLog)
 
-newItemStatus <- select(filter(merge(currentReport, newItems, by.x="Item.Code", by.y="Item.Code", all=FALSE),Item.Status == "In Progress"),Item.Code)
+newItemStatus <- select(filter(merge(currentNotRetired, newItems, by.x="Item.Code", by.y="Item.Code", all=FALSE),Item.Status == "In Progress"),Item.Code)
 logItems(newItemStatus, "New item should be active", errorLog)
 
 #Find items with Passage Code 2 present and Passage Code 1 NULL
-missingPassageOne <- select(filter(currentReport, Passage.2.Code != "NULL" & Passage.1.Code == "NULL"),Item.Code)
+missingPassageOne <- select(filter(currentNotRetired, Passage.2.Code != "NULL" & Passage.1.Code == "NULL"),Item.Code)
 logItems(missingPassageOne, "Missing Passage One Code", errorLog)
 
 #Find items with Passage Code 2 > Passage Code 1
-passageTwoGreater <- select(filter(currentReport, Passage.2.Code < Passage.1.Code),Item.Code)
+passageTwoGreater <- select(filter(currentNotRetired, Passage.2.Code < Passage.1.Code),Item.Code)
 logItems(passageTwoGreater, "Passage Two Code Greater Than Passage Code One", errorLog)
 
 #Find items with incorrect content area based on subject
-ContentArea <- select(filter(currentReport, (Subject == "Language Arts" & (Content.Area != "Media" & Content.Area !="Reading" & Content.Area !="Writing"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "Language Arts" & (Content.Area != "Media" & Content.Area !="Reading" & Content.Area !="Writing"))),Item.Code)
 logItems(ContentArea, "Wrong ELA content area", errorLog)
 
-ContentArea <- select(filter(currentReport, (Subject == "Math" & (Content.Area != "Mathematics" & Content.Area !="Geometry" & Content.Area !="Algebra I", & Content.Area != "Algebra II"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "Math" & (Content.Area != "Mathematics" & Content.Area !="Geometry" & Content.Area !="Algebra I", & Content.Area != "Algebra II"))),Item.Code)
 logItems(ContentArea, "Wrong Math content area", errorLog)
 
-ContentArea <- select(filter(currentReport, (Subject == "Science" & (Content.Area != "Biology", & Content.Area != "Earth and Space Sciences",  & Content.Area != "Science",  & Content.Area != "Physical Sciences",  & Content.Area != "Chemistry"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "Science" & (Content.Area != "Biology", & Content.Area != "Earth and Space Sciences",  & Content.Area != "Science",  & Content.Area != "Physical Sciences",  & Content.Area != "Chemistry"))),Item.Code)
 logItems(ContentArea, "Wrong Science content area", errorLog)
 
-ContentArea <- select(filter(currentReport, (Subject == "History/Social Studies" & (Content.Area != "American History" & Content.Area !="World History" & Content.Area !="Geography", & Content.Area != "Government", & Content.Area != "Economics"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "History/Social Studies" & (Content.Area != "American History" & Content.Area !="World History" & Content.Area !="Geography", & Content.Area != "Government", & Content.Area != "Economics"))),Item.Code)
 logItems(ContentArea, "Wrong Social Studies content area", errorLog)
 
-badGrade <- select(filter(currentReport, (Subject == "Language Arts" & (Item.Grade == "Grades 09-12"))),Item.Code)
+badGrade <- select(filter(currentNotRetired, (Subject == "Language Arts" & (Item.Grade == "Grades 09-12"))),Item.Code)
 logItems(badGrade, "Wrong ELA HS Grade", errorLog)
 
-badGrade <- select(filter(currentReport, (Subject != "Language Arts" & (Item.Grade == "Grade 09" | Item.Grade == "Grade 10" | Item.Grade == "Grade 11" | Item.Grade == "Grade 12"))),Item.Code)
+badGrade <- select(filter(currentNotRetired, (Subject != "Language Arts" & (Item.Grade == "Grade 09" | Item.Grade == "Grade 10" | Item.Grade == "Grade 11" | Item.Grade == "Grade 12"))),Item.Code)
 logItems(badGrade, "Wrong non-ELA HS Grade", errorLog)
 
 #Review Answer.Alignment column for MC items only
-answerAlignment <- select(filter(currentReport, (Item.Type == "Multiple Choice" & Answer.Alignment == 5)),Item.Code)
+answerAlignment <- select(filter(currentNotRetired, (Item.Type == "Multiple Choice" & Answer.Alignment == 5)),Item.Code)
 logItems(answerAlignment, "Answer Alignment should be 3", errorLog)
 
 #Review Answer.Alignment column for MC items only
-answerAlignment <- select(filter(currentReport, (Item.Type == "Multiple Choice" & Answer.Alignment == 4)),Item.Code)
+answerAlignment <- select(filter(currentNotRetired, (Item.Type == "Multiple Choice" & Answer.Alignment == 4)),Item.Code)
 logItems(answerAlignment, "Answer Alignment should be 2", errorLog)
 
+#Review for item has no correct answer
+correctAnswer <- select(filter(currentNotRetired, Correct.Answer == "")),Item.Code)
+logItems(correctAnswer, "Correct answer is null", errorLog)
 
 #Prep error log for export by adding item subject
-export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
+export <- merge(errorLog, currentNotRetired, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
 
 #Export log file
 write.xlsx(errorLog, "C:/Users/Melissa/Downloads/AllItemErrorLog.xlsx")

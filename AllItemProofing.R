@@ -127,8 +127,12 @@ answerAlignment <- select(filter(currentNotRetired, (Item.Type == "Multiple Choi
 logItems(answerAlignment, "Answer Alignment should be 2", errorLog)
 
 #Review for item has no correct answer
-correctAnswer <- select(filter(currentNotRetired, Correct.Answer == "")),Item.Code)
+correctAnswer <- select(filter(currentNotRetired, Correct.Answer == ""),Item.Code)
 logItems(correctAnswer, "Correct answer is null", errorLog)
+
+#Review for CR items with column span of 2
+columnSpan <- select(filter(currentNotRetired, ((Item.Type != "Grid-In" & Item.Type != "Choice Multiple" & Item.Type != "Multiple Choice")& Column.Count == 2)),Item.Code)
+logItems(columnSpan, "Column span should be 1 for item type", errorLog)
 
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentNotRetired, by.x= "Item.Code", by.y="Item.Code", all=FALSE)

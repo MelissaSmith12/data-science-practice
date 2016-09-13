@@ -118,6 +118,15 @@ logItems(badGrade, "Wrong ELA HS Grade", errorLog)
 badGrade <- select(filter(currentReport, (Subject != "Language Arts" & (Item.Grade == "Grade 09" | Item.Grade == "Grade 10" | Item.Grade == "Grade 11" | Item.Grade == "Grade 12"))),Item.Code)
 logItems(badGrade, "Wrong non-ELA HS Grade", errorLog)
 
+#Review Answer.Alignment column for MC items only
+answerAlignment <- select(filter(currentReport, (Item.Type == "Multiple Choice" & Answer.Alignment == 5)),Item.Code)
+logItems(answerAlignment, "Answer Alignment should be 3", errorLog)
+
+#Review Answer.Alignment column for MC items only
+answerAlignment <- select(filter(currentReport, (Item.Type == "Multiple Choice" & Answer.Alignment == 4)),Item.Code)
+logItems(answerAlignment, "Answer Alignment should be 2", errorLog)
+
+
 #Prep error log for export by adding item subject
 export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
 

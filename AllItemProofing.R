@@ -4,6 +4,8 @@
 #to be changed and a description of the change needed.
 
 #It is also a project to reacquaint myself with R packages, one tiny line of code at a time
+#It may contain silly exercises, just for testing out different functions, but
+#this code *WILL* be used soon to QC data.
 
 #check whether packages are installed
 
@@ -134,7 +136,14 @@ logItems(correctAnswer, "Correct answer is null", errorLog)
 columnSpan <- select(filter(currentNotRetired, ((Item.Type != "Grid-In" & Item.Type != "Choice Multiple" & Item.Type != "Multiple Choice")& Column.Count == 2)),Item.Code)
 logItems(columnSpan, "Column span should be 1 for item type", errorLog)
 
-#Prep error log for export by adding item subject
+#Find active items associated with Retired passages
+retiredPassages <- filter(currentPassages, Status == "Retired" & Passage.Code != "NULL")
+itemsWithRetiredPassages <- merge(currentNotRetired, retiredPassages, by.x="Passage.1.Code", by.y="Passage.Code")
+itemsWithRetiredPassages <- rbind(itemsWithRetiredPassages, merge(currentNotRetired, retiredPassages, by.x="Passage.2.Code", by.y="Passage.Code"))
+itemsWithRetiredPassages <- select(itemsWithRetiredPassages, Item.Code)
+logItems(itemsWithRetiredPassages, "Active Item to Retired Passge", errorLog)
+
+#Prep error log for export by adding item metadata back in 
 export <- merge(errorLog, currentNotRetired, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
 
 #Export log file

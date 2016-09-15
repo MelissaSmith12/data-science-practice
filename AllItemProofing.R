@@ -141,7 +141,15 @@ retiredPassages <- filter(currentPassages, Status == "Retired" & Passage.Code !=
 itemsWithRetiredPassages <- merge(currentNotRetired, retiredPassages, by.x="Passage.1.Code", by.y="Passage.Code")
 itemsWithRetiredPassages <- rbind(itemsWithRetiredPassages, merge(currentNotRetired, retiredPassages, by.x="Passage.2.Code", by.y="Passage.Code"))
 itemsWithRetiredPassages <- select(itemsWithRetiredPassages, Item.Code)
-logItems(itemsWithRetiredPassages, "Active Item to Retired Passge", errorLog)
+logItems(itemsWithRetiredPassages, "Active Item to Retired Passage", errorLog)
+
+#Find active passages, then find items where item grade doesn't equal passage grade
+activePassages <- filter(currentPassages, Status == "Active" & Passage.Code != "NULL")
+itemsWithActivePassages <- merge(currentNotRetired, activePassages, by.x="Passage.1.Code", by.y="Passage.Code")
+itemsWithActivePassages <- rbind(itemsWithActivePassages, merge(currentNotRetired, activePassages, by.x="Passage.2.Code", by.y="Passage.Code"))
+itemsWithActivePassages <- select(filter(itemsWithActivePassages, Item.Grade!=Grade.Level ), Item.Code)
+logItems(itemsWithActivePassages, "Item and passage grade mismatch", errorLog)
+
 
 #Prep error log for export by adding item metadata back in 
 export <- merge(errorLog, currentNotRetired, by.x= "Item.Code", by.y="Item.Code", all=FALSE)

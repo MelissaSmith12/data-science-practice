@@ -8,4 +8,6 @@ In other words, nothing to see here. Move along.
 2. careerWordCloud.R - plays around with script found on a blog script to generate word clouds based on script discovered in a blog post. Ultimately the word cloud was unsatifying, but it was a good introduction into Corpus - a data type that was new to me.  
 3. AllItemProofing.R - Active project to apply dplyr and regular expressions to find problematic data. Catches known problematic inconsistencies in item metadata.
 4. strengths.R - Processing keywords from strengths data gathering tasks from friends and coworkers, including summary chart of high-ranked keywords and a wordcloud  
-5. AllItemSummary.R - Processes all item reports and generates a package of summary statistics.   
+5. AllItemSummary.R - Processes all item reports and generates a package of summary statistics. 
+6. Midpoint Webpage parsing.iypub - web scraping project to grab some data for music festival schedule planning
+7. Data Nanodegree Assessment.iypub - assessment project for udacity nanodegree program. 

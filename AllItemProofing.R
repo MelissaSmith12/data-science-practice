@@ -105,13 +105,13 @@ logItems(passageTwoGreater, "Passage Two Code Greater Than Passage Code One", er
 ContentArea <- select(filter(currentNotRetired, (Subject == "Language Arts" & (Content.Area != "Media" & Content.Area !="Reading" & Content.Area !="Writing"))),Item.Code)
 logItems(ContentArea, "Wrong ELA content area", errorLog)
 
-ContentArea <- select(filter(currentNotRetired, (Subject == "Math" & (Content.Area != "Mathematics" & Content.Area !="Geometry" & Content.Area !="Algebra I", & Content.Area != "Algebra II"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "Math" & (Content.Area != "Mathematics" & Content.Area !="Geometry" & Content.Area !="Algebra I" & Content.Area != "Algebra II"))),Item.Code)
 logItems(ContentArea, "Wrong Math content area", errorLog)
 
-ContentArea <- select(filter(currentNotRetired, (Subject == "Science" & (Content.Area != "Biology", & Content.Area != "Earth and Space Sciences",  & Content.Area != "Science",  & Content.Area != "Physical Sciences",  & Content.Area != "Chemistry"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "Science" & (Content.Area != "Biology" & Content.Area != "Earth and Space Sciences"  & Content.Area != "Science"  & Content.Area != "Physical Sciences"  & Content.Area != "Chemistry"))),Item.Code)
 logItems(ContentArea, "Wrong Science content area", errorLog)
 
-ContentArea <- select(filter(currentNotRetired, (Subject == "History/Social Studies" & (Content.Area != "American History" & Content.Area !="World History" & Content.Area !="Geography", & Content.Area != "Government", & Content.Area != "Economics"))),Item.Code)
+ContentArea <- select(filter(currentNotRetired, (Subject == "History/Social Studies" & (Content.Area != "American History" & Content.Area !="World History" & Content.Area !="Geography" & Content.Area != "Government" & Content.Area != "Economics"))),Item.Code)
 logItems(ContentArea, "Wrong Social Studies content area", errorLog)
 
 badGrade <- select(filter(currentNotRetired, (Subject == "Language Arts" & (Item.Grade == "Grades 09-12"))),Item.Code)

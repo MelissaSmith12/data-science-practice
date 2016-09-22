@@ -72,7 +72,12 @@ itemCodeSpaces <- as.data.frame(grep(" ", currentNotRetired$Item.Code, value=TRU
 colnames(itemCodeSpaces) <- c("Item.Code")
 logItems(itemCodeSpaces, "space in item code", errorLog)
 
-#Throws error message, but ignoring
+#Identify any active Miami Dade items
+miamiDade <- as.data.frame(grep("^M", currentNotRetired$Item.Code, value=TRUE))
+colnames(miamiDade) <- c("Item.Code")
+logItems(miamiDade, "Miami Dade Item", errorLog)
+
+#Note duplicate codes
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()
 logItems(duplicateCode, "Duplicate Code", errorLog)
 

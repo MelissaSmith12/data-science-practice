@@ -8,3 +8,7 @@ french_goal_data <- fromJSON(french_goal_url)
 
 french_goal_data
 
+names(french_goal_data)
+
+french_goal_data$description
+french_goal_data$fullroad

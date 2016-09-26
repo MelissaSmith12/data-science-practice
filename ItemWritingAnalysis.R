@@ -10,8 +10,6 @@ library("httr")
 library("jsonlite")
 library("trelloR")
 
-my_token <- "a75a3e4d750fc6bdc912fd3de8c1f58c6fd706fab18dc54ce1072fb62fdf8e4d"
-
 #initial data exploration on personal board
 get_my_boards(token = my_token)
 board= get_id_board("https://trello.com/b/HEgOoY9G/home-sprint-3")

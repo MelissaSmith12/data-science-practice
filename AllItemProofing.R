@@ -77,6 +77,18 @@ miamiDade <- as.data.frame(grep("^M", currentNotRetired$Item.Code, value=TRUE))
 colnames(miamiDade) <- c("Item.Code")
 logItems(miamiDade, "Miami Dade Item", errorLog)
 
+#Identify any active Georgia items
+# NEXT STEPS -- expand to include starts with 3
+georgia <- as.data.frame(grep("^1", currentNotRetired$Item.Code, value=TRUE))
+colnames(georgia) <- c("Item.Code")
+logItems(georgia, "Georgia Item", errorLog)
+
+#Identify any active deleted items
+# NEXT STEPS -- expand to include Hold items
+activeDeletedItems <- as.data.frame(grep("^D", currentNotRetired$Item.Code, value=TRUE))
+colnames(activeDeletedItems) <- c("Item.Code")
+logItems(activeDeletedItems, "Active deleted items", errorLog)
+
 #Note duplicate codes
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()
 logItems(duplicateCode, "Duplicate Code", errorLog)

@@ -78,8 +78,7 @@ colnames(miamiDade) <- c("Item.Code")
 logItems(miamiDade, "Miami Dade Item", errorLog)
 
 #Identify any active Georgia items
-# NEXT STEPS -- expand to include starts with 3
-georgia <- as.data.frame(grep("^1", currentNotRetired$Item.Code, value=TRUE))
+georgia <- as.data.frame(grep("^1|^3", currentNotRetired$Item.Code, value=TRUE))
 colnames(georgia) <- c("Item.Code")
 logItems(georgia, "Georgia Item", errorLog)
 

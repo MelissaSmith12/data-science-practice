@@ -36,8 +36,8 @@ currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 currentPassages <- read.xlsx(currentPassageFile, sheetName = "Sheet1")
 
-#Select Active or in progress
-currentNotRetired <- filter(currentReport, Item.Status == "Active" | Item.Status == "In Progress")
+#Select Active items
+currentNotRetired <- filter(currentReport, Item.Status == "Active")
 
 #Create data frame for Blooms: DOK crosswalk
 DOK <- as.character(c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating"))
@@ -83,8 +83,12 @@ colnames(georgia) <- c("Item.Code")
 logItems(georgia, "Georgia Item", errorLog)
 
 #Identify any active deleted items
-# NEXT STEPS -- expand to include Hold items
 activeDeletedItems <- as.data.frame(grep("^D", currentNotRetired$Item.Code, value=TRUE))
+colnames(activeDeletedItems) <- c("Item.Code")
+logItems(activeDeletedItems, "Active deleted items", errorLog)
+
+#Identify any active HOLD items
+activeDeletedItems <- as.data.frame(grep("^H", currentNotRetired$Item.Code, value=TRUE))
 colnames(activeDeletedItems) <- c("Item.Code")
 logItems(activeDeletedItems, "Active deleted items", errorLog)
 

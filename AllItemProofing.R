@@ -11,8 +11,8 @@
 
 
 #load libraries     
-library(dplyr)
 library(plyr)
+library(dplyr)
 library(xlsx)
 
 #Set filenames and change working directory
@@ -31,10 +31,14 @@ currentPassageFile <- "FAIB-allallPass04072016-sampleError.xlsx"
 #Load New item list
 newItemFile <- "Preliminary Active Item List.xlsx"
 
+#Load retired items from prevous release
+previouslyRetiredItems <- "ExampleDeletedItems.xlsx"
+
 #Need to adjust to read xlsx version, remember to tackle stringsAsFactors
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"", stringsAsFactors = FALSE)
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 currentPassages <- read.xlsx(currentPassageFile, sheetName = "Sheet1")
+previousRetiredItems <- read.xlsx(previouslyRetiredItems, sheetName = "Sheet1")
 
 #Select Active items
 currentNotRetired <- filter(currentReport, Item.Status == "Active")
@@ -88,14 +92,19 @@ colnames(activeDeletedItems) <- c("Item.Code")
 logItems(activeDeletedItems, "Active deleted items", errorLog)
 
 #Identify any active HOLD items
-activeDeletedItems <- as.data.frame(grep("^H", currentNotRetired$Item.Code, value=TRUE))
-colnames(activeDeletedItems) <- c("Item.Code")
-logItems(activeDeletedItems, "Active deleted items", errorLog)
+activeHoldItems <- as.data.frame(grep("^H", currentNotRetired$Item.Code, value=TRUE))
+colnames(activeHoldItems) <- c("Item.Code")
+logItems(activeHoldItems, "Active deleted items", errorLog)
 
 #Identify any active test items
 activeTestItem <- as.data.frame(grep("^8", currentNotRetired$Item.Code, value=TRUE))
 colnames(activeTestItem) <- c("Item.Code")
 logItems(activeTestItem, "Active test item", errorLog)
+
+#identify previously deleted items that are now active
+activePreviouslyDeletedItems <- merge(previousRetiredItems, currentNotRetired, by.x="Internal.Id", by.y="Internal.Id")
+activePreviouslyDeletedItems <- select(itemsWithRetiredPassages, Item.Code)
+logItems(activePreviouslyDeletedItems, "Previously deleted active items", errorLog)
 
 #Note duplicate codes
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()

@@ -92,6 +92,11 @@ activeDeletedItems <- as.data.frame(grep("^H", currentNotRetired$Item.Code, valu
 colnames(activeDeletedItems) <- c("Item.Code")
 logItems(activeDeletedItems, "Active deleted items", errorLog)
 
+#Identify any active test items
+activeTestItem <- as.data.frame(grep("^8", currentNotRetired$Item.Code, value=TRUE))
+colnames(activeTestItem) <- c("Item.Code")
+logItems(activeTestItem, "Active test item", errorLog)
+
 #Note duplicate codes
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()
 logItems(duplicateCode, "Duplicate Code", errorLog)

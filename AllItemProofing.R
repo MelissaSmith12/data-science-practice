@@ -47,6 +47,7 @@ PreviousActiveItems <- read.xlsx(previousActiveList, sheetName = "Sheet1")
 
 #Select Active items
 currentNotRetired <- filter(currentReport, Item.Status == "Active")
+currentNotActive <- filter(currentReport, Item.Status != "Active")
 
 #Create data frame for Blooms: DOK crosswalk
 DOK <- as.character(c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating"))
@@ -108,11 +109,11 @@ logItems(activeTestItem, "Active test item", errorLog)
 
 #identify previously deleted items that are now active
 activePreviouslyDeletedItems <- merge(previousRetiredItems, currentNotRetired, by.x="Internal.Id", by.y="Internal.Id")
-activePreviouslyDeletedItems <- select(itemsWithRetiredPassages, Item.Code)
+activePreviouslyDeletedItems <- select(activePreviouslyDeletedItems, Item.Code)
 logItems(activePreviouslyDeletedItems, "Previously deleted active items", errorLog)
 
 #identify previously active items that are now retired
-
+noLongerActiveItems <- merge(PreviousActiveItems, currentNotActive, by.x ="Internal.Id", by.y="Internal.Id" )
 
 
 #Note duplicate codes

@@ -114,6 +114,9 @@ logItems(activePreviouslyDeletedItems, "Previously deleted active items", errorL
 
 #identify previously active items that are now retired
 noLongerActiveItems <- merge(PreviousActiveItems, currentNotActive, by.x ="Internal.Id", by.y="Internal.Id" )
+noLongerActiveItems <- select(noLongerActiveItems, Item.Code.x)
+names(noLongerActiveItems) <- c("Item.Code")
+logItems(noLongerActiveItems, "Was active, now not active", errorLog)
 
 
 #Note duplicate codes

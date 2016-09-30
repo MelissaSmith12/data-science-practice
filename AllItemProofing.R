@@ -31,14 +31,19 @@ currentPassageFile <- "FAIB-allallPass04072016-sampleError.xlsx"
 #Load New item list
 newItemFile <- "Preliminary Active Item List.xlsx"
 
-#Load retired items from prevous release
+#Load retired items from previous release
 previouslyRetiredItems <- "ExampleDeletedItems.xlsx"
+
+#Load item list from previous release
+previousActiveList <- "Previous Delivery Active Items.xlsx"
+
 
 #Need to adjust to read xlsx version, remember to tackle stringsAsFactors
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"", stringsAsFactors = FALSE)
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 currentPassages <- read.xlsx(currentPassageFile, sheetName = "Sheet1")
 previousRetiredItems <- read.xlsx(previouslyRetiredItems, sheetName = "Sheet1")
+PreviousActiveItems <- read.xlsx(previousActiveList, sheetName = "Sheet1")
 
 #Select Active items
 currentNotRetired <- filter(currentReport, Item.Status == "Active")
@@ -105,6 +110,10 @@ logItems(activeTestItem, "Active test item", errorLog)
 activePreviouslyDeletedItems <- merge(previousRetiredItems, currentNotRetired, by.x="Internal.Id", by.y="Internal.Id")
 activePreviouslyDeletedItems <- select(itemsWithRetiredPassages, Item.Code)
 logItems(activePreviouslyDeletedItems, "Previously deleted active items", errorLog)
+
+#identify previously active items that are now retired
+
+
 
 #Note duplicate codes
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()

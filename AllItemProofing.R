@@ -9,6 +9,12 @@
 
 #check whether packages are installed
 
+#To Do
+#Add Edmodo search
+#Add remaining items from trello board
+#Add date search for edited Progress Check items
+
+
 
 #load libraries     
 library(plyr)

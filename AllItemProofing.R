@@ -10,7 +10,6 @@
 #To Do
 #Add date search for edited Progress Check items
 #Add date search for passages less than 9 months away from delivery
-#Filter passage rights 1&2 to NULL, make sure there is no passage data
 #Check passage codes 1&2 for D, R, and 9
 
 #load libraries     

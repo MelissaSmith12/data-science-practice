@@ -5,15 +5,17 @@
 
 #It is also a project to reacquaint myself with R packages, one tiny line of code at a time
 #It may contain silly exercises, just for testing out different functions, but
-#this code *WILL* be used soon to QC data.
-
-#check whether packages are installed
+#this code *WILL* be used to QC data.
 
 #To Do
+#Load Edmodo items
 #Add Edmodo search
 #Add remaining items from trello board
 #Add date search for edited Progress Check items
-
+#Add date search for passages less than 9 months away from delivery
+#Filter passage rights 1&2 to NULL, make sure there is no passage data
+#Check passage codes 1&2 for D, R, and 9
+#Use current active item list instead of test file
 
 
 #load libraries     
@@ -22,34 +24,38 @@ library(dplyr)
 library(xlsx)
 
 #Set filenames and change working directory
-directory <- "C:/Users/Melissa/Downloads"
+directory <- "C:/Users/msmith/Documents/2016 Reports/Fall/Pre-Inference Engine/Metadata QC checks"
 setwd(directory) 
 
 #Load allitem report, currently commented out during program creation and testing
-currentDelivery <- "FAIB-allallItem04082016.xlsx"
+currentDelivery <- "AllItems.xlsx"
 
 #Instead load custom allItemReport with embedded errors for routine creation
 currentDelivery <- "FAIB-errorExamples.csv"
 
 #Load allpassage report
-currentPassageFile <- "FAIB-allallPass04072016-sampleError.xlsx"
+currentPassageFile <- "AllPassage.xlsx"
 
 #Load New item list
-newItemFile <- "Preliminary Active Item List.xlsx"
+newItemFile <- "Final New Active Item List.xlsx"
 
 #Load retired items from previous release
-previouslyRetiredItems <- "ExampleDeletedItems.xlsx"
+previouslyRetiredItems <- "Previously Retired Items.xlsx"
 
 #Load item list from previous release
 previousActiveList <- "Previous Delivery Active Items.xlsx"
 
+#Load Edmodo and Progress Check Items to verify deletion or editing
+edmodo <- "Edmodo Items.xlsx"
+progressChecks <- "Progress Check Items.xlsx"
 
 #Need to adjust to read xlsx version, remember to tackle stringsAsFactors
 currentReport <- read.csv2(currentDelivery, header = TRUE, sep = ",", quote = "\"", stringsAsFactors = FALSE)
 newItems <- read.xlsx(newItemFile, sheetName = "Sheet1")
 currentPassages <- read.xlsx(currentPassageFile, sheetName = "Sheet1")
-previousRetiredItems <- read.xlsx(previouslyRetiredItems, sheetName = "Sheet1")
-PreviousActiveItems <- read.xlsx(previousActiveList, sheetName = "Sheet1")
+previousRetiredItems <- read.xlsx(previouslyRetiredItems, sheetName = "Sheet1", )
+PreviousActiveItems <- read.xlsx(previousActiveList, sheetName = "Sheet1", stringsAsFactors = FALSE)
+edmodoItems <- read.xlsx(edmodo, sheetName = "Sheet1", stringsAsFactors = FALSE)
 
 #Select Active items
 currentNotRetired <- filter(currentReport, Item.Status == "Active")
@@ -65,22 +71,22 @@ errorLog <- data.frame(itemCode=character(), errorType=character())
 
 #Create a function to pass data frame (x) with offending item code and report error (y) to error log file
 logItems <- function(x, y, z) {
-    #get class of first argument
-    argClass <- class(x)
-    #find number of rows in inbound item code list
-    if(argClass == "character") {
-        nrows <- length(x)
-    } else {
-        nrows <- nrow(x)
-    }
-    if(nrows > 0) {
+  #get class of first argument
+  argClass <- class(x)
+  #find number of rows in inbound item code list
+  if(argClass == "character") {
+    nrows <- length(x)
+  } else {
+    nrows <- nrow(x)
+  }
+  if(nrows > 0) {
     #create [vector] of error messages matching length of inbound item code list
     errorMessage <- rep(y, nrows) 
     #append error messages to data frame
     x <- as.data.frame(cbind(x, errorMessage))    
     #append rows from item code data frame to error log
     errorLog <<- rbind(z, x)
-        }
+  }
 }
 
 #Find item codes where the item code contains a space
@@ -202,6 +208,8 @@ itemsWithActivePassages <- merge(currentNotRetired, activePassages, by.x="Passag
 itemsWithActivePassages <- rbind(itemsWithActivePassages, merge(currentNotRetired, activePassages, by.x="Passage.2.Code", by.y="Passage.Code"))
 itemsWithActivePassages <- select(filter(itemsWithActivePassages, Item.Grade!=Grade.Level ), Item.Code)
 logItems(itemsWithActivePassages, "Item and passage grade mismatch", errorLog)
+
+#Find Edmodo items that have been retired
 
 
 #Prep error log for export by adding item metadata back in 

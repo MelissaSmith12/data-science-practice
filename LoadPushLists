@@ -1,0 +1,46 @@
+Option Compare Database
+Option Explicit
+'This Module loads alignment data. Please note that existing alignment data must be manually deleted
+Sub LoadPushList()
+Dim strPathFile As String, strFile As String, strPath As String
+Dim strTable As String
+Dim blnHasFieldNames As Boolean
+Dim db As Database
+Set db = CurrentDb
+
+On Error GoTo ErrorExit
+Set db = CurrentDb
+
+' Change this next line to True if the first row in EXCEL worksheet
+' has field names
+blnHasFieldNames = True
+' Replace C:\Documents\ with the real path to the folder that
+' contains the EXCEL files
+strPath = "C:\Users\msmith\Documents\2016 Reports\Fall\Pre-Inference Engine\Push Lists\10.6.2016\Access\"
+
+' Replace tablename with the real name of the table into which
+' the data are to be imported
+strTable = "tblPushListAlignments"
+
+strFile = Dir(strPath & "*.xls")
+Do While Len(strFile) > 0
+      strPathFile = strPath & strFile
+      DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, _
+            strTable, strPathFile, blnHasFieldNames
+
+' Uncomment out the next code step if you want to delete the
+' EXCEL file after it's been imported
+'       Kill strPathFile
+
+      strFile = Dir()
+Loop
+
+DoCmd.SetWarnings True
+ExitSub:
+ db.Close
+ Set db = Nothing
+ Exit Sub
+ErrorExit:
+ MsgBox Err.Description
+ Resume ExitSub
+End Sub

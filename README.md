@@ -12,3 +12,5 @@ In other words, nothing to see here. Move along.
 6. Midpoint Webpage parsing.iypub - web scraping project to grab some data for music festival schedule planning
 7. Data Nanodegree Assessment.iypub - assessment project for udacity nanodegree program. 
 8. Bay_Area_Bike_Share_Analysis-checkpoint.iypub - modification and exploration of existing code in Python for initial project
+9. FormatPushLists.vba - work project that cribbed code from vba macro to re-format set of spreadsheets for loading
+10. LoadPushLists.vba - work project that loads a folder of push lists into access

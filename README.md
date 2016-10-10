@@ -14,3 +14,4 @@ In other words, nothing to see here. Move along.
 8. Bay_Area_Bike_Share_Analysis-checkpoint.iypub - modification and exploration of existing code in Python for initial project
 9. FormatPushLists.vba - work project that cribbed code from vba macro to re-format set of spreadsheets for loading
 10. LoadPushLists.vba - work project that loads a folder of push lists into access
+11. ReleaseAtAGlance - provides basic summary statistics about different elements of a product release

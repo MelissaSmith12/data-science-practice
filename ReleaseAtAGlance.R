@@ -21,3 +21,7 @@ setwd(directory)
 AllItem <- "AllItemenglish.csv"
 AllItem <- read.csv(currentDelivery, header=TRUE, stringsAsFactors = FALSE)
 AllItem <- filter(AllItem, Status == "Active")
+
+Spanish <- "ActiveSpanish.xlsx"
+Spanish <- read.xlsx2(Spanish, stringsAsFactors = FALSE)
+

@@ -1,6 +1,7 @@
 #This program consumes assorted reports related to the Navigate Release and produces 
 #summary statistics for marketing and support purposes
 
+
 library(plyr)
 library(dplyr)
 library(xlsx)
@@ -19,73 +20,70 @@ Spanish <- read.xlsx2(Spanish, stringsAsFactors = FALSE)
 Previous_date = "Spring 2016"
 Release_date = "Fall 2016"
 
-"Navigate Item BankT"
-"At-A-Glance: " + Release_date + " Release"
-Release_date + "Item Bank Summary"
+product_name <- "Navigate Item Bank"
+document_title <- paste("At-A-Glance:", Release_date, "Release")
+document_subtitle <- paste(Release_date, "Item Bank Summary")
+
+section_heading <- paste("What was the development focus for the", Release_date, "Release?") 
+
+section_heading <- paste("How many items are in the bank after the", Release_date, "Release?") 
+
+section_heading <- paste("How many items were added in the", Release_date, "Release?") 
+
+section_heading <- paste("How many passages are in the bank after the", Release_date, "Release?") 
+
+section_heading <- paste("How many passages were added in the", Release_date, "Release?") 
+
+section_heading <- paste("How many TEIs are in the bank after the", Release_date, "Release?") 
 
 
-Release_date + " Item Bank Summary"
+section_heading <- paste("How many TEIs were added in the", Release_date, "Release?") 
 
-"What was the development focus for the " Release_date " Release?" 
+section_heading <- paste("How many writing prompts are in the bank after the", Release_date, "Release?") 
 
-"How many items are in the bank after the Spring 2016 Release? "
+section_heading <- paste("How many writing prompts were added in the", Release_date, "Release?") 
 
-"How many items were added in Spring 2016? "
+section_heading <- paste("How many constructed-response items (excluding writing prompts) are in the bank after the", Release_date, "Release?") 
 
-"How many passages are in the bank after the Spring 2016 Release?"
+section_heading <- paste("How many constructed-response items (excluding writing prompts) were added in the", Release_date, "Release?") 
 
-"How many passages were added in Spring 2016? "
+section_heading <- paste("How many items translated/transadapted into Spanish are in the bank after the", Release_date, "Release?") 
 
-"How many TEIs are in the bank after the Spring 2016 Release? "
+section_heading <- paste("How many items translated/transadapted into Spanish were added in the", Release_date, "Release?") 
 
+section_heading <- paste("How many passages translated/transadapted into Spanish are in the bank after the", Release_date, "Release?") 
 
-"How many TEIs were added in Spring 2016? "
+section_heading <- paste("How many passages translated/transadapted into Spanish were added in the", Release_date, "Release?") 
 
-"How many writing prompts are in the bank after the Spring 2016 Release? "
+section_heading <- paste("How many items are written or aligned to the Common Core as of the", Release_date, "Release?") 
 
-"How many writing prompts were added in Spring 2016? "
+section_heading <- paste("Through the", Release_date, "Release, how many items have been written since the release of the CCSS standards in 2010?")
 
-"How many constructed-response items (excluding writing prompts) are in the bank after the Spring 2016 Release? "
+section_heading <- paste("How many items are written or aligned to the NGSS as of the", Release_date, "Release?") 
 
-"How many constructed-response items (excluding writing prompts) were added in Spring 2016? "
+section_heading <- paste("Through the", Release_date, "Release, how many items have been written since the release of the NGSS standards in April 2013? ")
 
-"How many items translated/transadapted into Spanish are in the bank after the Spring 2016 Release? "
+section_heading <- paste("Through the", Release_date, "Release, what is the breakdown of items by Depth of Knowledge (DOK)? ")
 
-"How many items translated/transadapted into Spanish were added in Spring 2016? "
-
-"How many passages translated/transadapted into Spanish are in the bank after the Spring 2016 Release? "
-
-"How many passages translated/transadapted into Spanish were added in Spring 2016? "
-
-"How many items are written or aligned to the Common Core as of the Spring 2016 Release? "
-
-"Through the Spring 2016 Release, how many items have been written since the release of the CCSS standards in 2010? "
-
-"How many items are written or aligned to the NGSS as of the Spring 2016 Release? "
-
-"Through the Spring 2016 Release, how many items have been written since the release of the NGSS standards in April 2013? "
-
-"Through the Spring 2016 Release, what is the breakdown of items by Depth of Knowledge (DOK)? "
-
-"Through the Spring 2016 Release, what is the breakdown of items by Bloom's Revised Taxonomy? "
+section_heading <- paste("Through the", Release_date, "Release, what is the breakdown of items by Bloom's Revised Taxonomy? ")
 
 
-"Release Comparison: Fall 2015 and Spring 2016"
+section_heading <- paste("Release Comparison:" Previous_date, "and", Release_date)
 
-"1.	Total number of items comparison"
+section_heading <- "Total number of items comparison"
 
-"*Items can be deleted for several reasons, including for things like content changing (e.g., Pluto no longer a planet) and losing the copyright for the stimulus the item(s) are tied to. "
+disclaimer <- "Items can be deleted for several reasons, including for things like content changing (e.g., Pluto no longer a planet) and losing the copyright for the stimulus the item(s) are tied to."
 
-"2.	Total number of passages comparison"
+section_heading <- "Total number of passages comparison"
 
-"3.	Total number of TEIs comparison"
+section_heading <- "Total number of TEIs comparison"
 
-"4.	Total number of writing prompts comparison"
+section_heading <- "Total number of writing prompts comparison"
 
-"5.	Total number of constructed-response items comparison (excluding writing prompts)"
+section_heading <- "Total number of constructed-response items comparison (excluding writing prompts)"
 
-"6.	Total number of items translated/transadapted into Spanish comparison"
+section_heading <- "Total number of items translated/transadapted into Spanish comparison"
 
-"7.	Total number of passages translated/transadapted into Spanish comparison"
+section_heading <- "Total number of passages translated/transadapted into Spanish comparison"
 
 

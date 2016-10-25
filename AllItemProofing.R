@@ -215,7 +215,12 @@ logItems(edmodoDeleted, "Deleted Edmodo Items", errorLog)
 
 # Check for duplicates
 # Check for 'pending' values in any category
+
 # Check for miskeys in passage codes, check for passage codes that end in a space =OR(LEFT(D2,1)=" ",RIGHT(D2,1)=" ")
+PassageCodeSpaces <- as.data.frame(grep(" ", currentPassages$Passage.Code, value=TRUE))
+colnames(PassageCodeSpaces) <- c("Passage.Code")
+logItems(PassageCodeSpaces, "space in Passage code", errorLog)
+
 # Public Domain/Previously Published - should all have authors listed
 # Authors - for previously published, public domain, make sure there are no weird authors ('in house', etc.)
 # Word Count - All passages should have a word count except for photographs etc (check passage subcategory for all passages with "N/A" in word count)

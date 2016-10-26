@@ -214,6 +214,10 @@ logItems(edmodoDeleted, "Deleted Edmodo Items", errorLog)
 #### Passage Checks ####
 
 # Check for duplicates
+duplicatePassageCode <- currentPassages %>% group_by(Passage.Code) %>% filter(n()>1) %>% select(Passage.Code) %>% as.data.frame()
+logItems(duplicatePassageCode, "Duplicate Passage Code", errorLog)
+
+
 # Check for 'pending' values in any category
 
 # Check for miskeys in passage codes, check for passage codes that end in a space =OR(LEFT(D2,1)=" ",RIGHT(D2,1)=" ")

@@ -217,9 +217,6 @@ logItems(edmodoDeleted, "Deleted Edmodo Items", errorLog)
 duplicatePassageCode <- currentPassages %>% group_by(Passage.Code) %>% filter(n()>1) %>% select(Passage.Code) %>% as.data.frame()
 logItems(duplicatePassageCode, "Duplicate Passage Code", errorLog)
 
-
-# Check for 'pending' values in any category
-
 # Check for miskeys in passage codes, check for passage codes that end in a space =OR(LEFT(D2,1)=" ",RIGHT(D2,1)=" ")
 PassageCodeSpaces <- as.data.frame(grep(" ", currentPassages$Passage.Code, value=TRUE))
 colnames(PassageCodeSpaces) <- c("Passage.Code")
@@ -230,11 +227,20 @@ logItems(PassageCodeSpaces, "space in Passage code", errorLog)
 # Word Count - All passages should have a word count except for photographs etc (check passage subcategory for all passages with "N/A" in word count)
 # Flesch Kincaid - N/A for writing, poetry, drama, some technical; should have values for everything else
 # Lexiles - N/A or NP for poetry, drama, some technical (NP - "Not Prose", this means the passage was actually scored by MetaMetrics. N/A and NP mean the same thing, but we paid for the NPs) Also, confirm that data entry added new Lexiles correctly.
+
+
+
+
 # Expiration dates - Previously published only, should NOT be less than 9 months away from delivery. Should be N/A for Public Domain and Commissioned. All passages with rights in perpetuity should be 12/31/9999
 # All Text Category/Subcategory values are valid
 # Text Origin - Should only have values for Previously Published/Public Domain Fiction, Drama, Poetry Passages (NOTE - right now literary nonfiction has a mix of "N/A" and values. More have values than not. Decide if we want them all to have values or all change to N/A)
+
+
 # Main Character/Ethnicity - Should have values for both or N/A for both
-# Original Source, Source Title, Copyright Year - Should have values for Previously Published/Public Domain, N/A for Commissioned
+
+# Check for 'pending' values in any category
+
+
 # Expanded Rights - ALL active passages should have 'yes'
 # Embedded Errors - Should be N/A for ALL reading, "yes" or "no" for writing (Media may be mixed)
 # Multicultural - should be 'yes' or 'no' (not N/A)

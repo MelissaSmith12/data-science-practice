@@ -18,3 +18,6 @@ In other words, nothing to see here. Move along.
 12. StandardsProofing - Webscraping exercise to proof data entry from html file of standards capture
 13. PDF_Scrape - Playing around with R PDF packages for text scraping. Exploring possibilities of how we might use R to analyze PDFs for standards capture
 14. UpdateDriverFiles.vba - small script used to run series of Access queries
+15. Changed Item Driver - analyzes a series of reports to identify list of items meeting given criteria
+16. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty semi-intentionally
+17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.

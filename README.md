@@ -21,3 +21,4 @@ In other words, nothing to see here. Move along.
 15. Changed Item Driver - analyzes a series of reports to identify list of items meeting given criteria
 16. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty semi-intentionally
 17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.
+18. AO3 Search Rank - scrapes AO3 search results and returns a list sorted by reads / kudos.

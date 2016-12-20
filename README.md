@@ -23,3 +23,4 @@ In other words, nothing to see here. Move along.
 17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.
 18. AO3 Search Rank - scrapes AO3 search results and returns a list sorted by reads / kudos.
 19. AB API calls - initial project to play around with AB API calls in preparation for creating asset relationships
+20. Coverage Reports - Backup for VBA code prior to reconfigure to save reports by state instead of by report type

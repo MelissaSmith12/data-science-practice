@@ -26,3 +26,11 @@ In other words, nothing to see here. Move along.
 20. Coverage Reports - Backup for VBA code prior to reconfigure to save reports by state instead of by report type
 21. Beeminder API.R - initial playing around with R's API package, quickly abandoned - will use Python
 22. ItemWritingAnalysis.R - Abandoned attempt to ask questions of the All Item report data
+
+
+Need to move to udacity repository:
+break_time.py
+musicbrainz api calls
+L1_Starter_Code
+Data nanodegree Assessment
+Bay Area Bike Share Analysis

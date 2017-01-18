@@ -11,10 +11,12 @@ On Error GoTo ErrorExit
 
 DoCmd.SetWarnings False
 
-DoCmd.OpenQuery "qryDelTX_STAAR_Alignments"
-DoCmd.OpenQuery ""
-DoCmd.OpenQuery ""
-DoCmd.OpenQuery ""
+DoCmd.OpenQuery "qryDeleteTX_STAAR_Alignments"
+DoCmd.OpenQuery "qryDeleteTX_TEKS_MathPracticeHandpicks"
+DoCmd.OpenQuery "qryDeleteCC_ToTX_Crosswalk"
+DoCmd.OpenQuery "qryDeleteTX_ProcessHandAlignments"
+DoCmd.OpenQuery "qryDeleteTX_TEKS_MathPracticeIndividualGradeCrosswalk"
+DoCmd.OpenQuery "qryDeleteTX_STAAR_MathPracticeIndividualGradeCrosswalk"
 
 'Set directory
 strDir = "C:\Users\msmith\Documents\TEKS to STAAR\"

@@ -5,6 +5,8 @@ Sub TexasMathProcess()
 Dim strDir As String
 Dim strFile As String
 Dim strTable As String
+Dim DupCount As Integer
+
 On Error GoTo ErrorExit
 
 DoCmd.SetWarnings False
@@ -47,10 +49,11 @@ DoCmd.OpenQuery "qryTX_TEKS_MathPracticeHandpicks"
 'For TEKS generate list from crosswalk (with grades from base alignments)
 DoCmd.OpenQuery "qryTX_TEKS_FromCC_Crosswalk"
 
+'Merge Handpicks and crosswalk data
+DoCmd.OpenQuery "qryTX_TEKS_MathPracticeTotalMakeTable"
 
-'Remove duplicates (should only impact 1.C)
-
-'Create and Export final version
+'Remove duplicates and add to MathPracticeComplete table
+DoCmd.OpenQuery "qryTX_TEKS_MathPracticeAddToBase"
 
 '################  STAAR   ###########
 
@@ -59,40 +62,17 @@ strFile = DirName & "TX STAAR Math Practice Individual Grade Crosswalk.xlsx"
 strTable = "tblTX_STAAR_MathPracticeIndividualGradeCrosswalk"
 DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strFile, blnHasFieldNames
 
-
 'For STAAR generate handpick list with grades (with grades from base alignments)
 DoCmd.OpenQuery "qryTX_STAAR_MathPracticeHandpicks"
 
 'For TEKS generate list from crosswalk (with grades from base alignments)
+DoCmd.OpenQuery "qryTX_STAAR_FromCC_Crosswalk"
 
-'Remove duplicates (should only impact 1.C)
-'Create and Export final version
+'Merge Handpicks and crosswalk data
+DoCmd.OpenQuery "qryTX_STAAR_MathPracticeTotalMakeTable"
 
-'##########SCRAPS###############
-
-
-'Update the StateNum field in the ReportingState Table to control what state's data is used for each report
-    DoCmd.RunSQL "Update tblReportingState SET StateNumber = " & StateNumber & "  WHERE ID = 1"
-'Process Item Fills and Count them
-    DoCmd.OpenQuery "qryReportingStateCustomCC_ItemFills"
-    ItemFillCount = DCount("[Internal ID]", "tblReportingStateCustomCC_ItemFills")
-'Generate crosswalked alignments for non-Item fill items
-    DoCmd.OpenQuery "qryReportingStateCrosswalkedAlignmentsNotFromItemFills"
-    CrosswalkCount = DCount("[Internal ID]", "tblReportingStateCrosswalkedAlignmentsNotFromItemFills")
-'Generate final push list for state
-    DoCmd.OpenQuery "qryCustomCC_PushListMakeTable"
-    PushListCount = DCount("[Internal ID]", "tblCustomCC_PushListMakeTable")
-'Export Push List
-    DoCmd.TransferSpreadsheet acExport, acSpreadsheetTypeExcel12Xml, "tblCustomCC_PushListMakeTable", PushListFileName, True
-
-
-
-strTable = "tblCC_toMathPracticeCrosswalk"
-
-      strPathFile = strPath & strFile
-      DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strPathFile, blnHasFieldNames
-
-
+'Remove duplicates and add to MathPracticeComplete table
+DoCmd.OpenQuery "qryTX_STAAR_MathPracticeAddToBase"
 
 DoCmd.SetWarnings True
 ExitSub:

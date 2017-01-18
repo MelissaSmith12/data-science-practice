@@ -1,0 +1,108 @@
+Option Compare Database
+Option Explicit
+'This Module loads Common Core Literacy Standards Crosswalk files. Please note that crosswalk alignment data must be manually deleted
+Sub TexasMathProcess()
+Dim strDir As String
+Dim strFile As String
+Dim strTable As String
+On Error GoTo ErrorExit
+
+DoCmd.SetWarnings False
+
+DoCmd.OpenQuery "qryDelTX_STAAR_Alignments"
+DoCmd.OpenQuery ""
+DoCmd.OpenQuery ""
+DoCmd.OpenQuery ""
+
+'Set directory
+strDir = "C:\Users\msmith\Documents\TEKS to STAAR\"
+
+'Load STAAR alignments
+strFile = DirName & "TX-STAAR Alignments for Access.xlsx"
+strTable = "tblTX_STAAR_Alignments"
+DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strFile, blnHasFieldNames
+
+'Create table of TEKS Math alignments
+DoCmd.OpenQuery "qryTX_TEKS_Math"
+
+'Load CC to TX MP Crosswalk
+strFile = DirName & "CC to TX MP Crosswalk.xlsx"
+strTable = "tblCC_ToTX_Crosswalk"
+DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strFile, blnHasFieldNames
+
+'Load TX MP handpicks
+strFile = DirName & "TX Process Standards Hand Alignments.xlsx"
+strTable = "tblTX_ProcessHandAlignments"
+DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strFile, blnHasFieldNames
+
+'################  TEKS   ############
+
+'Load TEKS MP grade-specific crosswalk
+strFile = DirName & "TX TEKS Math Practice Individual Grade Crosswalk.xlsx"
+strTable = "tblTX_TEKS_MathPracticeIndividualGradeCrosswalk"
+DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strFile, blnHasFieldNames
+
+'For TEKS generate handpick list with grades (with grades from base alignments)
+DoCmd.OpenQuery "qryTX_TEKS_MathPracticeHandpicks"
+'For TEKS generate list from crosswalk (with grades from base alignments)
+DoCmd.OpenQuery "qryTX_TEKS_FromCC_Crosswalk"
+
+
+'Remove duplicates (should only impact 1.C)
+
+'Create and Export final version
+
+'################  STAAR   ###########
+
+'Load STAAR MP grade-specific crosswalk
+strFile = DirName & "TX STAAR Math Practice Individual Grade Crosswalk.xlsx"
+strTable = "tblTX_STAAR_MathPracticeIndividualGradeCrosswalk"
+DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strFile, blnHasFieldNames
+
+
+'For STAAR generate handpick list with grades (with grades from base alignments)
+DoCmd.OpenQuery "qryTX_STAAR_MathPracticeHandpicks"
+
+'For TEKS generate list from crosswalk (with grades from base alignments)
+
+'Remove duplicates (should only impact 1.C)
+'Create and Export final version
+
+'##########SCRAPS###############
+
+
+'Update the StateNum field in the ReportingState Table to control what state's data is used for each report
+    DoCmd.RunSQL "Update tblReportingState SET StateNumber = " & StateNumber & "  WHERE ID = 1"
+'Process Item Fills and Count them
+    DoCmd.OpenQuery "qryReportingStateCustomCC_ItemFills"
+    ItemFillCount = DCount("[Internal ID]", "tblReportingStateCustomCC_ItemFills")
+'Generate crosswalked alignments for non-Item fill items
+    DoCmd.OpenQuery "qryReportingStateCrosswalkedAlignmentsNotFromItemFills"
+    CrosswalkCount = DCount("[Internal ID]", "tblReportingStateCrosswalkedAlignmentsNotFromItemFills")
+'Generate final push list for state
+    DoCmd.OpenQuery "qryCustomCC_PushListMakeTable"
+    PushListCount = DCount("[Internal ID]", "tblCustomCC_PushListMakeTable")
+'Export Push List
+    DoCmd.TransferSpreadsheet acExport, acSpreadsheetTypeExcel12Xml, "tblCustomCC_PushListMakeTable", PushListFileName, True
+
+
+
+strTable = "tblCC_toMathPracticeCrosswalk"
+
+      strPathFile = strPath & strFile
+      DoCmd.TransferSpreadsheet acImport, acSpreadsheetTypeExcel9, strTable, strPathFile, blnHasFieldNames
+
+
+
+DoCmd.SetWarnings True
+ExitSub:
+ rs.Close
+ db.Close
+ Set rs = Nothing
+ Set db = Nothing
+ Exit Sub
+ErrorExit:
+ MsgBox Err.Description
+ Resume ExitSub
+End Sub
+

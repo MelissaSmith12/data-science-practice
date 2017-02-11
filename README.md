@@ -1,6 +1,6 @@
 # practice-stuff
 
-This repository is just a pile of small, unrelated beginner projects to refamiliarize myself with the language. I've set up a beeminder with the intent to log seven commits a week. 
+This repository is just a pile of small, unrelated beginner projects to refamiliarize myself with the language. I've set up a beeminder with the intent to log 21 commits a week. 
 
 In other words, nothing to see here. Move along.
 
@@ -21,12 +21,14 @@ In other words, nothing to see here. Move along.
 15. Changed Item Driver - analyzes a series of reports to identify list of items meeting given criteria
 16. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty semi-intentionally
 17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.
-18. AO3 Search Rank - scrapes AO3 search results and returns a list sorted by reads / kudos.
+18. AO3 Search Rank - scrapes AO3 search results and applies a customized sort method to them
 19. AB API calls - initial project to play around with AB API calls in preparation for creating asset relationships
 20. Coverage Reports - Backup for VBA code prior to reconfigure to save reports by state instead of by report type
 21. Beeminder API.R - initial playing around with R's API package, quickly abandoned - will use Python
 22. ItemWritingAnalysis.R - Abandoned attempt to ask questions of the All Item report data
-
+23. Invoice Analysis.ipynb - Pulls invoices from zip files and processes for summary statistics
+24. TX Math Process Alignment creation - VB script to run a series of crosswalk queries
+25. Map Asset Types.ipynb - Processes file and sorts through dataframe to add additional data
 
 Need to move to udacity repository:
 break_time.py

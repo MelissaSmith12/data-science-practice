@@ -29,6 +29,8 @@ In other words, nothing to see here. Move along.
 23. Invoice Analysis.ipynb - Pulls invoices from zip files and processes for summary statistics
 24. TX Math Process Alignment creation - VB script to run a series of crosswalk queries
 25. Map Asset Types.ipynb - Processes file and sorts through dataframe to add additional data
+26. Parse tagging data.ipynb - Parses semicolon delimeted flat data into json hierachical format
+
 
 Need to move to udacity repository:
 break_time.py

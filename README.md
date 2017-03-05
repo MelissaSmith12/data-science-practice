@@ -31,10 +31,3 @@ In other words, nothing to see here. Move along.
 25. Map Asset Types.ipynb - Processes file and sorts through dataframe to add additional data
 26. Parse tagging data.ipynb - Parses semicolon delimeted flat data into json hierachical format
 
-
-Need to move to udacity repository:
-break_time.py
-musicbrainz api calls
-L1_Starter_Code
-Data nanodegree Assessment
-Bay Area Bike Share Analysis

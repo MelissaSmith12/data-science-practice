@@ -8,54 +8,58 @@
 #this code *WILL* be used to QC data.
 
 #To Do
+#Load Edmodo items
+#Add Edmodo search
+#Add remaining items from trello board
 #Add date search for edited Progress Check items
 #Add date search for passages less than 9 months away from delivery
 #Filter passage rights 1&2 to NULL, make sure there is no passage data
 #Check passage codes 1&2 for D, R, and 9
+#Use current active item list instead of test file
+
 
 #load libraries     
 library(plyr)
 library(dplyr)
-library(xlsx)
+library(openxlsx)
 
 #Set filenames and change working directory
-directory <- "C:/Users/Melissa/Documents/Work/Metadata QC"
+directory <- "C:/Users/msmith/Documents/2017 Reports/Spring 2017/Pre-Snapshot/Metadata QC/"
 setwd(directory) 
 
 #Load allitem report, currently commented out during program creation and testing
-currentDelivery <- "AllItemenglish.csv"
+currentDelivery <- "AllItemenglish_03222017_11.59.AM.xlsx"
 
 #Instead load custom allItemReport with embedded errors for routine creation
 #currentDelivery <- "FAIB-errorExamples.csv"
 
 #Load allpassage report
-currentPassageFile <- "AllPassageenglish.csv"
+currentPassageFile <- "AllPassageenglish_03222017_01.18.PM.xlsx"
 
 #Load New item list
-newItemFile <- "Final New Active Item List.xlsx"
+newItemFile <- "All Subjects Preliminary Active Item List SP17 3.21.17.xlsx"
 
 #Load retired items from previous release
-previouslyRetiredItems <- "Previous Delivery Deleted Items.xlsx"
+previouslyRetiredItems <- "Previous Delivery Retired Items.xlsx"
 
 #Load item list from previous release
 previousActiveList <- "Previous Delivery Active Items.xlsx"
 
 #Load Edmodo and Progress Check Items to verify deletion or editing
 edmodo <- "Edmodo Items.xlsx"
-progressChecks <- "Progress Check Items.xlsx"
+#progressChecks <- "Progress Check Items.xlsx"
 
 #Need to adjust to read xlsx version, remember to tackle stringsAsFactors
-currentItems <- read.csv(currentDelivery, header=TRUE, stringsAsFactors = FALSE)
-newItems <- read.xlsx(newItemFile, sheetName = "Sheet1", stringsAsFactors = FALSE)
-currentPassages <- read.csv(currentPassageFile, header = TRUE, stringsAsFactors = FALSE)
-previousRetiredItems <- read.xlsx2(previouslyRetiredItems, sheetName = "Sheet1", stringsAsFactors = FALSE)
-PreviousActiveItems <- read.xlsx2(previousActiveList, sheetName = "Sheet1", stringsAsFactors = FALSE)
-edmodoItems <- read.xlsx(edmodo, sheetName = "Sheet1", stringsAsFactors = FALSE)
-progressCheckItems <- read.xlsx(progressChecks, sheetName = "Sheet1", stringsAsFactors = FALSE)
+currentReport <- read.xlsx(currentDelivery, sheet = 1)
+newItems <- read.xlsx(newItemFile, sheet = 1)
+currentPassages <- read.xlsx(currentPassageFile, sheet = 1)
+previousRetiredItems <- read.xlsx(previouslyRetiredItems, sheet = 1)
+PreviousActiveItems <- read.xlsx(previousActiveList, sheet = 1)
+edmodoItems <- read.xlsx(edmodo, sheet = 1)
 
 #Select Active items
-currentNotRetired <- filter(currentItems, Item.Status == "Active")
-currentNotActive <- filter(currentItems, Item.Status != "Active")
+currentNotRetired <- filter(currentReport, Item.Status == "Active")
+currentNotActive <- filter(currentReport, Item.Status != "Active")
 
 #Create data frame for Blooms: DOK crosswalk
 DOK <- as.character(c("Remembering", "Understanding","Applying", "Analyzing", "Evaluating", "Creating"))
@@ -67,22 +71,22 @@ errorLog <- data.frame(itemCode=character(), errorType=character())
 
 #Create a function to pass data frame (x) with offending item code and report error (y) to error log file
 logItems <- function(x, y, z) {
-    #get class of first argument
-    argClass <- class(x)
-    #find number of rows in inbound item code list
-    if(argClass == "character") {
-        nrows <- length(x)
-    } else {
-        nrows <- nrow(x)
-    }
-    if(nrows > 0) {
-        #create [vector] of error messages matching length of inbound item code list
-        errorMessage <- rep(y, nrows) 
-        #append error messages to data frame
-        x <- as.data.frame(cbind(x, errorMessage))    
-        #append rows from item code data frame to error log
-        errorLog <<- rbind(z, x)
-    }
+  #get class of first argument
+  argClass <- class(x)
+  #find number of rows in inbound item code list
+  if(argClass == "character") {
+    nrows <- length(x)
+  } else {
+    nrows <- nrow(x)
+  }
+  if(nrows > 0) {
+    #create [vector] of error messages matching length of inbound item code list
+    errorMessage <- rep(y, nrows) 
+    #append error messages to data frame
+    x <- as.data.frame(cbind(x, errorMessage))    
+    #append rows from item code data frame to error log
+    errorLog <<- rbind(z, x)
+  }
 }
 
 #Find item codes where the item code contains a space
@@ -117,35 +121,36 @@ logItems(activeTestItem, "Active test item", errorLog)
 
 #identify previously deleted items that are now active
 activePreviouslyDeletedItems <- merge(previousRetiredItems, currentNotRetired, by.x="Internal.ID", by.y="Internal.Id")
-activePreviouslyDeletedItems <- select(activePreviouslyDeletedItems, Item.Code.x)
-colnames(activePreviouslyDeletedItems) <- c("Item.Code")
+activePreviouslyDeletedItems <- select(activePreviouslyDeletedItems, Item.Code)
 logItems(activePreviouslyDeletedItems, "Previously deleted active items", errorLog)
 
 #identify previously active items that are now retired
-noLongerActiveItems <- merge(PreviousActiveItems, currentNotActive, by.x ="Internal.Id", by.y="Internal.Id" )
-noLongerActiveItems <- select(noLongerActiveItems, Item.Code.y)
+noLongerActiveItems <- merge(PreviousActiveItems, currentNotActive, by.x ="Internal.ID", by.y="Internal.Id" )
+noLongerActiveItems <- select(noLongerActiveItems, itemcode)
 names(noLongerActiveItems) <- c("Item.Code")
 logItems(noLongerActiveItems, "Was active, now not active", errorLog)
+
 
 #Note duplicate codes
 duplicateCode <- currentNotRetired %>% group_by(Item.Code) %>% filter(n()>1) %>% select(Item.Code) %>% as.data.frame()
 logItems(duplicateCode, "Duplicate Code", errorLog)
 
-missingBloom <- select(filter(currentNotRetired, Bloom.s.Revised.Taxonomy == "NULL" | Bloom.s.Revised.Taxonomy == ""),Item.Code)
+bloomfilter = "Bloom's.Revised.Taxonomy"
+missingBloom <- select(filter(currentNotRetired, bloomfilter== "NULL" | bloomfilter == ""),Item.Code)
 logItems(missingBloom, "Missing Bloom", errorLog)
 
 missingDOK <- select(filter(currentNotRetired, Depth.Of.Knowledge == "NULL" | Depth.Of.Knowledge == ""),Item.Code)
 logItems(missingDOK, "Missing DOK", errorLog)
 
 #Create data frame that shows item code, blooms, and DOK + crosswalkDOK. Identify bad DOK
-crosswalkDOK <- merge(DOK, currentNotRetired, by.x= "Blooms", by.y="Bloom.s.Revised.Taxonomy", all=FALSE)
+crosswalkDOK <- merge(DOK, currentNotRetired, by.x= "Blooms", by.y=bloomfilter, all=FALSE)
 crosswalkDOK <- select(filter(crosswalkDOK, DOK != Depth.Of.Knowledge),Item.Code)
 logItems(crosswalkDOK, "Wrong DOK crosswalk", errorLog)
 
 missingDifficulty <- select(filter(currentNotRetired, Estimated.Difficulty.Level == "NULL" | Estimated.Difficulty.Level == ""),Item.Code)
 logItems(missingDifficulty, "Missing Difficulty", errorLog)
 
-newItemStatus <- select(filter(merge(currentNotRetired, newItems, by.x="Item.Code", by.y="Item.Code", all=FALSE),Item.Status == "In Progress"),Item.Code)
+newItemStatus <- select(filter(merge(currentNotRetired, newItems, by.x="Item.Code", by.y="Item.Code", all=FALSE),Item.Status != "Active"),Item.Code)
 logItems(newItemStatus, "New item should be active", errorLog)
 
 #Find items with Passage Code 2 present and Passage Code 1 NULL
@@ -206,55 +211,16 @@ itemsWithActivePassages <- select(filter(itemsWithActivePassages, Item.Grade!=Gr
 logItems(itemsWithActivePassages, "Item and passage grade mismatch", errorLog)
 
 #Find Edmodo items that have been retired
-edmodoDeleted <- merge(currentNotActive, edmodoItems, by.x = "Internal.Id", by.y = "Internal.ID")
-edmodoDeleted <- select(edmodoDeleted, Item.Code.x)
-colnames(edmodoDeleted) <- c("Item.Code")
-logItems(edmodoDeleted, "Deleted Edmodo Items", errorLog)
-
-#### Passage Checks ####
-
-# Check for duplicates
-duplicatePassageCode <- currentPassages %>% group_by(Passage.Code) %>% filter(n()>1) %>% select(Passage.Code) %>% as.data.frame()
-logItems(duplicatePassageCode, "Duplicate Passage Code", errorLog)
-
-# Check for miskeys in passage codes, check for passage codes that end in a space =OR(LEFT(D2,1)=" ",RIGHT(D2,1)=" ")
-PassageCodeSpaces <- as.data.frame(grep(" ", currentPassages$Passage.Code, value=TRUE))
-colnames(PassageCodeSpaces) <- c("Passage.Code")
-logItems(PassageCodeSpaces, "space in Passage code", errorLog)
-
-# Public Domain/Previously Published - should all have authors listed
-# Authors - for previously published, public domain, make sure there are no weird authors ('in house', etc.)
-# Word Count - All passages should have a word count except for photographs etc (check passage subcategory for all passages with "N/A" in word count)
-# Flesch Kincaid - N/A for writing, poetry, drama, some technical; should have values for everything else
-# Lexiles - N/A or NP for poetry, drama, some technical (NP - "Not Prose", this means the passage was actually scored by MetaMetrics. N/A and NP mean the same thing, but we paid for the NPs) Also, confirm that data entry added new Lexiles correctly.
-
-
-
-
-# Expiration dates - Previously published only, should NOT be less than 9 months away from delivery. Should be N/A for Public Domain and Commissioned. All passages with rights in perpetuity should be 12/31/9999
-# All Text Category/Subcategory values are valid
-# Text Origin - Should only have values for Previously Published/Public Domain Fiction, Drama, Poetry Passages (NOTE - right now literary nonfiction has a mix of "N/A" and values. More have values than not. Decide if we want them all to have values or all change to N/A)
-
-
-# Main Character/Ethnicity - Should have values for both or N/A for both
-
-# Check for 'pending' values in any category
-
-
-# Expanded Rights - ALL active passages should have 'yes'
-# Embedded Errors - Should be N/A for ALL reading, "yes" or "no" for writing (Media may be mixed)
-# Multicultural - should be 'yes' or 'no' (not N/A)
-# Supporting information/art - should have value(s) or N/A
-
-
-# Keywords - Spell check
-# Spell check passage titles
-# Spell check SI&G field
+noLongerActiveEdmodoItems <- merge(edmodoItems, currentNotActive, by.x ="Internal.ID", by.y="Internal.Id" )
+noLongerActiveEdmodoItems <- select(noLongerActiveEdmodoItems, Item.Code.x)
+logItems(noLongerActiveEdmodoItems, "Edmodo Item now retired", errorLog)
 
 
 #Prep error log for export by adding item metadata back in 
-export <- merge(errorLog, currentItems, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
+export <- merge(errorLog, currentReport, by.x= "Item.Code", by.y="Item.Code", all=FALSE)
+
 
 #Export log file
-write.xlsx(export, "C:/Users/Melissa/Downloads/AllItemErrorLog.xlsx")
+filename <- "C:/AccessReports/AllItemErrorLog.xlsx"
+writeWorksheetToFile(filename, export, sheet = "Sheet1")
 

@@ -12,8 +12,7 @@ In other words, nothing to see here. Move along.
 6. Midpoint Webpage parsing.iypub - web scraping project to grab some data for music festival schedule planning
 7. Data Nanodegree Assessment.iypub - assessment project for udacity nanodegree program. 
 8. Bay_Area_Bike_Share_Analysis-checkpoint.iypub - modification and exploration of existing code in Python for initial udacity project
-9. FormatPushLists.vba - work project that cribbed code from vba macro to re-format set of spreadsheets for loading
-10. LoadPushLists.vba - work project that loads a folder of push lists into access
+
 11. ReleaseAtAGlance - provides basic summary statistics about different elements of a product release
 12. StandardsProofing - Webscraping exercise to proof data entry from html file of standards capture
 13. PDF_Scrape - Playing around with R PDF packages for text scraping. Exploring possibilities of how we might use R to analyze PDFs for standards capture

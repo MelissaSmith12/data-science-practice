@@ -24,8 +24,6 @@ In other words, nothing to see here. Move along.
 19. AB API calls - initial project to play around with AB API calls in preparation for creating asset relationships
 20. Coverage Reports - Backup for VBA code prior to reconfigure to save reports by state instead of by report type
 21. Beeminder API.R - initial playing around with R's API package, quickly abandoned - will use Python
-22. ItemWritingAnalysis.R - Abandoned attempt to ask questions of the All Item report data
-23. Invoice Analysis.ipynb - Pulls invoices from zip files and processes for summary statistics
-24. TX Math Process Alignment creation - VB script to run a series of crosswalk queries
+
 
 

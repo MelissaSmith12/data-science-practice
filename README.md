@@ -13,11 +13,9 @@ In other words, nothing to see here. Move along.
 7. Data Nanodegree Assessment.iypub - assessment project for udacity nanodegree program. 
 8. Bay_Area_Bike_Share_Analysis-checkpoint.iypub - modification and exploration of existing code in Python for initial udacity project
 
-11. ReleaseAtAGlance - provides basic summary statistics about different elements of a product release
 12. StandardsProofing - Webscraping exercise to proof data entry from html file of standards capture
 13. PDF_Scrape - Playing around with R PDF packages for text scraping. Exploring possibilities of how we might use R to analyze PDFs for standards capture
-14. UpdateDriverFiles.vba - small script used to run series of Access queries
-15. Changed Item Driver - analyzes a series of reports to identify list of items meeting given criteria
+
 16. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty semi-intentionally
 17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.
 18. AO3 Search Rank - scrapes AO3 search results and applies a customized sort method to them

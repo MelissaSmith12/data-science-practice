@@ -19,8 +19,6 @@ In other words, nothing to see here. Move along.
 16. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty semi-intentionally
 17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.
 18. AO3 Search Rank - scrapes AO3 search results and applies a customized sort method to them
-19. AB API calls - initial project to play around with AB API calls in preparation for creating asset relationships
-20. Coverage Reports - Backup for VBA code prior to reconfigure to save reports by state instead of by report type
 21. Beeminder API.R - initial playing around with R's API package, quickly abandoned - will use Python
 
 

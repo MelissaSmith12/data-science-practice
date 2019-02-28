@@ -4,22 +4,14 @@ This repository is just a pile of small, unrelated beginner projects to refamili
 
 In other words, nothing to see here. Move along.
 
-1. yarn.r - This project describes uses the R yarn warp data set to perform some parctice with the dplyr package  
-2. careerWordCloud.R - plays around with script found on a blog script to generate word clouds based on script discovered in a blog post. Ultimately the word cloud was unsatifying, but it was a good introduction into Corpus - a data type that was new to me.  
-3. AllItemProofing.R - Active project to apply dplyr and regular expressions to find problematic data. Catches known problematic inconsistencies in item metadata.
-4. strengths.R - Processing keywords from strengths data gathering tasks from friends and coworkers, including summary chart of high-ranked keywords and a wordcloud  
-5. AllItemSummary.R - Processes all item reports and generates a package of summary statistics. 
-6. Midpoint Webpage parsing.iypub - web scraping project to grab some data for music festival schedule planning
-7. Data Nanodegree Assessment.iypub - assessment project for udacity nanodegree program. 
-8. Bay_Area_Bike_Share_Analysis-checkpoint.iypub - modification and exploration of existing code in Python for initial udacity project
-
-12. StandardsProofing - Webscraping exercise to proof data entry from html file of standards capture
-13. PDF_Scrape - Playing around with R PDF packages for text scraping. Exploring possibilities of how we might use R to analyze PDFs for standards capture
-
-16. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty semi-intentionally
-17. Standards Web parse - analyzes downloaded standards files using Beatiful Soup to scrape data.
-18. AO3 Search Rank - scrapes AO3 search results and applies a customized sort method to them
-21. Beeminder API.R - initial playing around with R's API package, quickly abandoned - will use Python
+1. careerWordCloud.R - plays around with script found on a blog script to generate word clouds based on script discovered in a blog post. Ultimately the word cloud was unsatifying, but it was a good introduction into Corpus - a data type that was new to me.  
+2. strengths.R - Processing keywords from strengths data gathering tasks from friends and coworkers, including summary chart of high-ranked keywords and a wordcloud  
+3. Midpoint Webpage parsing.iypub - web scraping project to grab some data for music festival schedule planning
+4. Data Nanodegree Assessment.iypub - assessment project for udacity nanodegree program. 
+5. Bay_Area_Bike_Share_Analysis-checkpoint.iypub - modification and exploration of existing code in Python for initial udacity project
+6. Mumford and Sons Concert Scrape - uses lxml to scrape data off Mumford and Sons web page for a friend to use in Excel training class - left data a little dirty purposefully.
+7. AO3 Search Rank - scrapes AO3 search results and applies a customized sort method to them
+8. Beeminder API.R - initial playing around with R's API package, quickly abandoned - will use Python
 
 
 

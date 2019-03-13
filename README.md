@@ -1,6 +1,6 @@
 # practice-stuff
 
-This repository is just a pile of small, unrelated beginner projects to refamiliarize myself with the language. I've set up a beeminder with the intent to log 21 commits a week. 
+This repository is just a pile of small, unrelated beginner projects to refamiliarize myself with R and Python. 
 
 1. careerWordCloud.R - plays around with script found on a blog script to generate word clouds based on script discovered in a blog post. Ultimately the word cloud was unsatifying, but it was a good introduction into Corpus - a data type that was new to me.  
 2. strengths.R - Processing keywords from strengths data gathering tasks from friends and coworkers, including summary chart of high-ranked keywords and a wordcloud  
